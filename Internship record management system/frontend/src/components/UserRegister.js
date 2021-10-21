@@ -19,6 +19,7 @@ import IconButton from '@mui/material/IconButton';
 
 import {Link, useHistory } from 'react-router-dom'
 import Axios from 'axios';
+import validator from 'validator'
 
 const UserRegister = () => {
 
@@ -27,13 +28,19 @@ const UserRegister = () => {
     const [password, setPassword] = React.useState('');
     const [showPassword, setShowPassword] = React.useState(false);
 
+    const [emailError, setEmailError] = React.useState('');
+    const [passwordError, setPasswordError] = React.useState('');
+    const [usertypeError, setUsertypeError] = React.useState('');
+
     const history = useHistory();
 
     const handleChange = (event) => {
         setUsertype(event.target.value);
+        setUsertypeError('');
     };
     
     const handlePasswordChange = (event) => {
+        validatePassword(event.target.value);
         setPassword(event.target.value);
     };
     
@@ -47,19 +54,82 @@ const UserRegister = () => {
         event.preventDefault();
     };
 
+    const validate = () => {
+        let emailError = "";
+        let passwordError = "";
+        let usertypeError = "";
+
+        // if(usertype === "student"){
+        //     if(!email){
+        //         emailError = "Please enter your Sliit email";
+        //     }
+        //     else if(!email.includes("@my.sliit.lk")){
+        //         emailError = "Invalid Email";
+        //     }
+        // }
+        // else if(usertype === "intern manager"){
+        //     if(!email){
+        //         emailError = "Please enter your Sliit email";
+        //     }
+        //     else if(!email.includes("@sliit.lk")){
+        //         emailError = "Invalid Email";
+        //     }
+        // }
+
+        if(!password){
+            passwordError = "Please enter a password";
+        }
+        if(!email){
+            emailError = "Please enter your Sliit email";
+        }
+        if(!usertype){
+            usertypeError = "Please select a user type";
+        }
+        
+        if(emailError || passwordError){
+            setEmailError(emailError);
+            setPasswordError(passwordError)
+            setUsertypeError(usertypeError)
+            return false;
+        }
+
+        return true;
+    }
+
+    const validatePassword = (value) => {
+  
+        if (validator.isStrongPassword(value, {
+            minLength: 6, minLowercase: 1,
+            minUppercase: 1, minNumbers: 1, minSymbols: 1
+        })) {
+            setPasswordError('Is a Strong Password')
+            return true;
+        } else {
+            setPasswordError('Is Not a Strong Password. Minimum 6 characters required with lowercase, uppercase, numerical and special characters.')
+            return false;
+        }
+      }
+
     const register = () => {
-        Axios.post("http://localhost:5000/api/users/register", {
-          usertype: usertype,
-          email: email,
-          password: password
-        }).then((res) => {
-          console.log(res);
-          setUsertype('')
-          setPassword('')
-          setEmail('')
-          let path = `/studentregistration`; 
-          history.push(path);
-        })
+        const isValid = validate();
+        //const isValidPassword = validatePassword(password);
+        if(isValid){
+            Axios.post("http://localhost:5000/api/users/register", {
+                usertype: usertype,
+                email: email,
+                password: password
+            }).then((res) => {
+                console.log(res);
+                setUsertype('')
+                setPassword('')
+                setEmail('')
+                setEmailError('')
+                setPasswordError('')
+                setUsertypeError('')
+                let path = `/studentregistration`; 
+                history.push(path);
+            })
+        }    
     }
 
     return (
@@ -90,20 +160,25 @@ const UserRegister = () => {
                                     value={usertype}
                                     label="User Type"
                                     onChange={handleChange}
+                                    required
                                 >
                                     <MenuItem value="student">Student</MenuItem>
                                     <MenuItem value="supervisor">Supervisor</MenuItem>
                                     <MenuItem value="intern manager">Intern Manager</MenuItem>
                                 </Select>
                             </FormControl>   
+                            <div style={{color: "red"}}>{usertypeError}</div>
                             
                             <TextField id="email" type="email" label="Email" variant="outlined" fullWidth 
                                 sx={{ marginTop: 2 }}
                                 value={email}
                                 onChange={(e) => {
                                     setEmail(e.target.value);
+                                    setEmailError('');
                                 }}
+                                required
                             />
+                            <div style={{color: "red"}}>{emailError}</div>
 
                             <FormControl sx={{ marginTop: 2 }} variant="outlined" fullWidth>
                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -125,14 +200,18 @@ const UserRegister = () => {
                                     </InputAdornment>
                                     }
                                     label="Password"
+                                    required
                                 />
                             </FormControl>
+                            <div style={{color: "red"}}>{passwordError}</div>
+                            {/* <div style={{color: "red"}}>{passwordErrorEmpty}</div> */}
                     </CardContent>
                     <CardActions>
                             <Button 
                                 variant="contained" 
                                 onClick={register}
                                 fullWidth
+                                //disabled={!usertype || !email || !password }
                             >
                                 Register
                             </Button>
