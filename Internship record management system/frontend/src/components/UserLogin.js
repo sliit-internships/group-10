@@ -8,9 +8,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
 import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -19,9 +17,11 @@ import IconButton from '@mui/material/IconButton';
 
 import {Link, useHistory } from 'react-router-dom'
 import Axios from 'axios';
-import validator from 'validator'
 
-const UserLogin = ({email, setEmail, password, setPassword}) => {
+const UserLogin = () => {
+
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
 
     const [showPassword, setShowPassword] = React.useState(false);
     const [error, setError] = React.useState('');
@@ -91,7 +91,17 @@ const UserLogin = ({email, setEmail, password, setPassword}) => {
     }
 
     return (
-        <div>
+        <div style={{
+            backgroundImage: `url("https://static.sliit.lk/wp-content/uploads/2018/03/SLIIT-malabe.jpg")`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            width: '100vw',
+            height: '100vh'
+        }}>
+            <Typography variant="h2" sx={{color: "#FFFFFF", fontFamily: '"Helvetica Neue"'}}>
+                            SLIIT INTERNSHIPS
+            </Typography>
             <Box
                 sx={{
                     display: 'flex',
@@ -99,7 +109,7 @@ const UserLogin = ({email, setEmail, password, setPassword}) => {
                     m: 1,
                     width: 450,
                     height: 550,
-                    marginTop: 10
+                    marginTop: 2
                     },
                 }}
                 alignItems="center"
@@ -107,7 +117,7 @@ const UserLogin = ({email, setEmail, password, setPassword}) => {
                 >
                 <Card variant="outlined">
                     <CardContent>
-                        <Typography variant="h4" component="div" sx= {{marginBottom: 5}}>
+                        <Typography variant="h4" component="div" sx= {{marginBottom: 5, color: "#FFA400", fontFamily: '"Helvetica Neue"'}}>
                             User Login
                         </Typography>
                             {/* <FormControl fullWidth>
@@ -174,6 +184,7 @@ const UserLogin = ({email, setEmail, password, setPassword}) => {
                                 variant="contained" 
                                 onClick={login}
                                 fullWidth
+                                sx= {{backgroundColor: "#FFA400", fontFamily: '"Helvetica Neue"'}}
                                 //disabled={!usertype || !email || !password }
                             >
                                 Login

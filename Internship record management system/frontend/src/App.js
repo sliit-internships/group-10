@@ -7,7 +7,6 @@ import StudentRegistration from './components/StudentRegistration';
 import UserLogin from './components/UserLogin';
 import StudentDetails from './components/StudentDetails';
 
-
 function App() {
 
   const [usertype, setUsertype] = React.useState('');
@@ -27,10 +26,7 @@ function App() {
         )}/>
         <Route path= '/login' render= {(props) => (
           <>
-            <UserLogin
-              usertype={usertype} setUsertype={setUsertype} email={email} setEmail={setEmail} 
-              password={password} setPassword={setPassword}
-            />
+            <UserLogin/>
           </>
         )}/>
         <Route path= '/studentregistration' render= {(props) => (

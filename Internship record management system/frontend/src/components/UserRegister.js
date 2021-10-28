@@ -55,7 +55,8 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
         let emailError = "";
         let passwordError = "";
         let usertypeError = "";
-        let emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+        // let emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+        let emailRegex = /^[it|bm]+[0-9]+@[a-z]+\.[a-z]+\.[a-z]+/;
 
         if(usertype === "student"){
             if(!emailRegex.test(email)){
@@ -127,7 +128,7 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                 } else {
                     if(usertype === "student"){
                         let path = `/studentregistration`; 
-                        history.push(path);
+                        history.push(path, {email});
                     }
                     setUsertype('')
                     setPassword('')
@@ -138,7 +139,17 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
     }
 
     return (
-        <div>
+        <div style={{
+                backgroundImage: `url("https://static.sliit.lk/wp-content/uploads/2018/03/SLIIT-malabe.jpg")`,
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                width: '100vw',
+                height: '100vh'
+        }}>
+            <Typography variant="h2" sx={{color: "#FFFFFF", fontFamily: '"Helvetica Neue"'}}>
+                            SLIIT INTERNSHIPS
+            </Typography>
             <Box
                 sx={{
                     display: 'flex',
@@ -146,7 +157,8 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                     m: 1,
                     width: 450,
                     height: 550,
-                    marginTop: 10
+                    // marginTop: 10
+                    marginTop: 2
                     },
                 }}
                 alignItems="center"
@@ -154,7 +166,7 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                 >
                 <Card variant="outlined">
                     <CardContent>
-                        <Typography variant="h4" component="div" sx= {{marginBottom: 5}}>
+                        <Typography variant="h4" component="div" sx= {{marginBottom: 5, color: "#FFA400", fontFamily: '"Helvetica Neue"'}}>
                             User Registration
                         </Typography>
                             <FormControl fullWidth>
@@ -221,6 +233,7 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                                 variant="contained" 
                                 onClick={register}
                                 fullWidth
+                                sx= {{backgroundColor: "#FFA400", fontFamily: '"Helvetica Neue"'}}
                                 //disabled={!usertype || !email || !password }
                             >
                                 Register
