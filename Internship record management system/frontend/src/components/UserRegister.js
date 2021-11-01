@@ -21,11 +21,8 @@ import {Link, useHistory } from 'react-router-dom'
 import Axios from 'axios';
 import validator from 'validator'
 
-const UserRegister = () => {
+const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPassword}) => {
 
-    const [usertype, setUsertype] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
     const [showPassword, setShowPassword] = React.useState(false);
 
     const [emailError, setEmailError] = React.useState('');
@@ -58,15 +55,15 @@ const UserRegister = () => {
         let emailError = "";
         let passwordError = "";
         let usertypeError = "";
+        // let emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+        let emailRegex = /^[it|bm]+[0-9]+@[a-z]+\.[a-z]+\.[a-z]+/;
 
-        // if(usertype === "student"){
-        //     if(!email){
-        //         emailError = "Please enter your Sliit email";
-        //     }
-        //     else if(!email.includes("@my.sliit.lk")){
-        //         emailError = "Invalid Email";
-        //     }
-        // }
+        if(usertype === "student"){
+            if(!emailRegex.test(email)){
+                emailError = "Invalid Email";
+            };
+            //should be replaced with student email reference table validation
+        }
         // else if(usertype === "intern manager"){
         //     if(!email){
         //         emailError = "Please enter your Sliit email";
@@ -75,18 +72,21 @@ const UserRegister = () => {
         //         emailError = "Invalid Email";
         //     }
         // }
+        if(!emailRegex.test(email)){
+            emailError = "Invalid Email";
+        };
 
         if(!password){
             passwordError = "Please enter a password";
         }
         if(!email){
-            emailError = "Please enter your Sliit email";
+            emailError = "Please enter your email";
         }
         if(!usertype){
             usertypeError = "Please select a user type";
         }
         
-        if(emailError || passwordError){
+        if(emailError || passwordError || usertypeError){
             setEmailError(emailError);
             setPasswordError(passwordError)
             setUsertypeError(usertypeError)
@@ -120,20 +120,36 @@ const UserRegister = () => {
                 password: password
             }).then((res) => {
                 console.log(res);
-                setUsertype('')
-                setPassword('')
-                setEmail('')
-                setEmailError('')
-                setPasswordError('')
-                setUsertypeError('')
-                let path = `/studentregistration`; 
-                history.push(path);
+                // setEmailError('')
+                // setPasswordError('')
+                // setUsertypeError('')
+                if(res.data.message === "Email already in use"){
+                    setEmailError("Email already in use")
+                } else {
+                    if(usertype === "student"){
+                        let path = `/studentregistration`; 
+                        history.push(path, {email});
+                    }
+                    setUsertype('')
+                    setPassword('')
+                    setEmail('')
+                }
             })
         }    
     }
 
     return (
-        <div>
+        <div style={{
+                backgroundImage: `url("https://static.sliit.lk/wp-content/uploads/2018/03/SLIIT-malabe.jpg")`,
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                width: '100vw',
+                height: '100vh'
+        }}>
+            <Typography variant="h2" sx={{color: "#FFFFFF", fontFamily: '"Helvetica Neue"'}}>
+                            SLIIT INTERNSHIPS
+            </Typography>
             <Box
                 sx={{
                     display: 'flex',
@@ -141,7 +157,8 @@ const UserRegister = () => {
                     m: 1,
                     width: 450,
                     height: 550,
-                    marginTop: 10
+                    // marginTop: 10
+                    marginTop: 2
                     },
                 }}
                 alignItems="center"
@@ -149,7 +166,7 @@ const UserRegister = () => {
                 >
                 <Card variant="outlined">
                     <CardContent>
-                        <Typography variant="h4" component="div" sx= {{marginBottom: 5}}>
+                        <Typography variant="h4" component="div" sx= {{marginBottom: 5, color: "#FFA400", fontFamily: '"Helvetica Neue"'}}>
                             User Registration
                         </Typography>
                             <FormControl fullWidth>
@@ -169,8 +186,12 @@ const UserRegister = () => {
                             </FormControl>   
                             <div style={{color: "red"}}>{usertypeError}</div>
                             
+                            <div style={{ marginTop: 15 }}>
+                            {usertype === "student" && <Typography sx={{ fontSize: 14, marginBottom: 1 }} color="text.secondary">
+                                Students are strongly recommended use SLIIT e-mail address e.g it17051456@my.sliit.lk and it will be the primary e-mail address SLIIT industry placement unit will correspond with the student
+                            </Typography>}
                             <TextField id="email" type="email" label="Email" variant="outlined" fullWidth 
-                                sx={{ marginTop: 2 }}
+                                // sx={{ marginTop: 2 }}
                                 value={email}
                                 onChange={(e) => {
                                     setEmail(e.target.value);
@@ -178,6 +199,7 @@ const UserRegister = () => {
                                 }}
                                 required
                             />
+                            </div>
                             <div style={{color: "red"}}>{emailError}</div>
 
                             <FormControl sx={{ marginTop: 2 }} variant="outlined" fullWidth>
@@ -211,6 +233,7 @@ const UserRegister = () => {
                                 variant="contained" 
                                 onClick={register}
                                 fullWidth
+                                sx= {{backgroundColor: "#FFA400", fontFamily: '"Helvetica Neue"'}}
                                 //disabled={!usertype || !email || !password }
                             >
                                 Register
