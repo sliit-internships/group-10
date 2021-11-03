@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const port = 5000 || process.env.PORT;
 
 //routes
 const users = require('./routes/users');
@@ -51,6 +52,6 @@ app.get('/createuserstable', (req, res) => {
 //routes
 app.use('/api/users', users)
 
-app.listen('5000', () => {
-    console.log('Server started on port 5000');
+app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
 })
