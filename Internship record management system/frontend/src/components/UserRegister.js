@@ -55,7 +55,6 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
         let emailError = "";
         let passwordError = "";
         let usertypeError = "";
-        // let emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
         let emailRegex = /^[it|bm]+[0-9]+@[a-z]+\.[a-z]+\.[a-z]+/;
 
         if(usertype === "student"){
