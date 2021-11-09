@@ -6,6 +6,7 @@ import UserRegister from './components/UserRegister';
 import StudentRegistration from './components/StudentRegistration';
 import UserLogin from './components/UserLogin';
 import StudentDetails from './components/StudentDetails';
+import SupervisorDetails from './components/SupervisorDetails';
 
 function App() {
 
