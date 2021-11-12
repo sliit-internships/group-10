@@ -21,9 +21,12 @@ import Stack from '@mui/material/Stack';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import PhoneInput from 'react-phone-number-input'
+import { useHistory } from 'react-router-dom';
 
 import '../App.css'; 
 import { blue } from '@mui/material/colors';
+import "react-phone-number-input/style.css"
 
 const StudentRegistration = () => {
 
@@ -53,44 +56,97 @@ const StudentRegistration = () => {
     const [internshipStartDateError, setInternshipStartDateError] = React.useState('');
     const [supervisorEmailError, setSupervisorEmailError] = React.useState('');
 
+    const history = useHistory();
+
     const handleDateChange = (newValue) => {
         setInternshipStartDate(newValue);
     };
 
-    const convertPhone = (value) => {
-        if(value){
-          return value.replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ');
-        }  
-    }
-
     const validate = () => {
         let studentIdNumberError = "";
-        let studentIdNumberRegex = /^[IT|BM]+[0-9]{8}$/;
-        // let passwordError = "";
-        // let usertypeError = "";
-        // let emailRegex = /^[it|bm]+[0-9]+@[a-z]+\.[a-z]+\.[a-z]+/;
+        let studentIdNumberRegex = /^[IT|BM]+[0-9]{8}$/; 
+        let currentYearError = "";
+        let Year2CompletionYearError = "";
+        let Year2CompletionPeriodError = "";
+        let sepcializationError = "";
+        let nameError = "";
+        let nameRegex = /^[a-zA-Z]+ ([A-Z]+(\.[A-Z]+)+)/;
+        let mobileError = "";
+        let mobileRegex = /^[94]+[0-9\b]+$/;
+        let homePhoneError = "";
+        let homePhoneRegex = /^[94]+[0-9\b]+$/;
+        let internshipStartDateError = "";
+        let supervisorEmailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+        let supervisorEmailError = "";
 
         if(!studentIdNumberRegex.test(studentIdNumber)){
             studentIdNumberError = "Invalid Student Id Number";
         };
-        // if(!emailRegex.test(email)){
-        //     emailError = "Invalid Email";
-        // };
+        if(!nameRegex.test(name)){
+            nameError = "Invalid Name";
+        };
+        if(!mobileRegex.test(mobile)){
+            mobileError = "Invalid Mobile Number";
+        } else if(mobile.length !== 11){
+            mobileError = "Invalid Mobile Number";
+        }
+        if(!homePhoneRegex.test(homePhone)){
+            homePhoneError = "Invalid Home Phone Number";
+        } else if(homePhone.length !== 11){
+            homePhoneError = "Invalid Home Phone Number";
+        }
+        if(!supervisorEmailRegex.test(supervisorEmail)){
+            supervisorEmailError = "Invalid Supervisor Email";
+        } 
+
 
         if(!studentIdNumber){
             studentIdNumberError = "Please enter the Student Id Number";
         }
-        // if(!email){
-        //     emailError = "Please enter your email";
-        // }
-        // if(!usertype){
-        //     usertypeError = "Please select a user type";
-        // }
+        if(!currentYear){
+            currentYearError = "Please enter the Current Year of Registration at SLIIT";
+        }
+        if(!Year2CompletionYear){
+            Year2CompletionYearError = "Please fill the field";
+        }
+        if(!Year2CompletionPeriod){
+            Year2CompletionPeriodError = "Please fill the field";
+        }
+        if(!sepcialization){
+            sepcializationError = "Please enter the Sepcialization";
+        }
+        if(!name){
+            nameError = "Please enter the Student Name";
+        }
+        if(!mobile){
+            mobileError = "Please enter the Mobile Number";
+        }
+        if(!homePhone){
+            homePhoneError = "Please enter the Home Phone Number";
+        }
+        if(!internshipStartDate){
+            internshipStartDateError = "Please enter the Internship Start Date";
+        }
+        if(!supervisorEmail){
+            if(currentYear === "Year 1" ||  currentYear === "Year 2"){
+                supervisorEmailError = "";
+            }else{
+                supervisorEmailError = "Please enter the Supervisor Email";
+            }    
+        }
         
-        if(studentIdNumberError){
+        if(studentIdNumberError || nameError || mobileError || homePhoneError || internshipStartDateError || currentYearError || Year2CompletionYearError || Year2CompletionPeriodError || sepcializationError || supervisorEmailError){
             setStudentIdNumberError(studentIdNumberError);
-            // setPasswordError(passwordError)
-            // setUsertypeError(usertypeError)
+            setNameError(nameError);
+            setMobileError(mobileError);
+            setHomePhoneError(homePhoneError);
+            setInternshipStartDateError(internshipStartDateError);
+            setSupervisorEmailError(supervisorEmailError);
+            setCurrentYearError(currentYearError);
+            setYear2CompletionYearError(Year2CompletionYearError);
+            setYear2CompletionPeriodError(Year2CompletionPeriodError);
+            setSepcializationError(sepcializationError);
+
             return false;
         }
 
@@ -114,6 +170,10 @@ const StudentRegistration = () => {
                 internshipStartDate: dateFormat(internshipStartDate, "yyyy-mm-dd"),
                 supervisorEmail: supervisorEmail
             }).then((res) => {
+
+                let path = `/studentdetails`; 
+                history.push(path);
+
                 console.log(res);
                 setStudentIdNumber('');
                 setCurrentYear('');
@@ -132,11 +192,6 @@ const StudentRegistration = () => {
         }    
     }
 
-    // if(internshipStartDate){
-    //     console.log(dateFormat(internshipStartDate, "yyyy-mm-dd"));
-    // }
-    
-
     return (
         <div>
             <Header/>
@@ -147,7 +202,7 @@ const StudentRegistration = () => {
                     '& > :not(style)': {
                     m: 1,
                     width: 1200,
-                    height: 2000,
+                    height: 1830,
                     marginTop: 4,
                     marginBottom: 4
                     },
@@ -210,7 +265,7 @@ const StudentRegistration = () => {
                                     <MenuItem value="Year 4 Prorata registered">Year 4 Prorata registered</MenuItem>
                                 </Select>
                             </FormControl>   
-                            {/* <div style={{color: "red"}}>{usertypeError}</div> */}
+                            <div style={{color: "red"}}>{currentYearError}</div>
 
                             <FormControl fullWidth sx={{textAlign: 'left', marginTop: 7}} size="small">
                                 <InputLabel id="demo-simple-select-label">
@@ -231,12 +286,13 @@ const StudentRegistration = () => {
                                     <MenuItem value="2019">2019</MenuItem>
                                     <MenuItem value="2020">2020</MenuItem>
                                     <MenuItem value="2021">2021</MenuItem>
-                                    <MenuItem value="2021">2022</MenuItem>
-                                    <MenuItem value="2021">2023</MenuItem>
-                                    <MenuItem value="2021">2024</MenuItem>
-                                    <MenuItem value="2021">2025 and after</MenuItem>
+                                    <MenuItem value="2022">2022</MenuItem>
+                                    <MenuItem value="2023">2023</MenuItem>
+                                    <MenuItem value="2024">2024</MenuItem>
+                                    <MenuItem value="2025 and after">2025 and after</MenuItem>
                                 </Select>
                             </FormControl>   
+                            <div style={{color: "red"}}>{Year2CompletionYearError}</div>
 
                             <FormControl fullWidth sx={{textAlign: 'left', marginTop: 7}} size="small">
                                 <InputLabel id="demo-simple-select-label">
@@ -256,7 +312,8 @@ const StudentRegistration = () => {
                                     <MenuItem value="Jan - June">Jan - June</MenuItem>
                                     <MenuItem value="July - Nov">July - Nov</MenuItem>
                                 </Select>
-                            </FormControl>   
+                            </FormControl> 
+                            <div style={{color: "red"}}>{Year2CompletionPeriodError}</div>  
 
                             <FormControl fullWidth sx={{textAlign: 'left', marginTop: 7}} size="small">
                                 <InputLabel id="demo-simple-select-label">
@@ -276,8 +333,14 @@ const StudentRegistration = () => {
                                     <MenuItem value="SE">SE</MenuItem>
                                     <MenuItem value="IT">IT</MenuItem>
                                     <MenuItem value="CS">CS</MenuItem>
+                                    <MenuItem value="SE">DS</MenuItem>
+                                    <MenuItem value="IT">IM</MenuItem>
+                                    <MenuItem value="CS">CSNE</MenuItem>
+                                    <MenuItem value="IT">ISE</MenuItem>
+                                    <MenuItem value="CS">Not Yet Finalized (2nd Year Student)</MenuItem>
                                 </Select>
                             </FormControl> 
+                            <div style={{color: "red"}}>{sepcializationError}</div>
 
                             <div>
                             <Typography sx={{ fontSize: 14, marginBottom: 2, marginTop: 7, textAlign: 'left'}} color="text.secondary">
@@ -294,6 +357,7 @@ const StudentRegistration = () => {
                                 required
                             />
                             </div>  
+                            <div style={{color: "red"}}>{nameError}</div>
 
                             <div>
                             <Typography sx={{ fontSize: 14, marginBottom: 2, marginTop: 7, textAlign: 'left'}} color="text.secondary">
@@ -302,6 +366,7 @@ const StudentRegistration = () => {
                             <TextField id="mobile" type="text" label="Student Mobile Phone Number" variant="outlined" fullWidth 
                                 //sx={{ marginTop: 1, marginBottom: 7 }}
                                 size="small"
+                                // value={mobile}convertPhone
                                 value={mobile}
                                 onChange={(e) => {
                                     setMobile(e.target.value);
@@ -309,7 +374,17 @@ const StudentRegistration = () => {
                                 }}
                                 required
                             />
+                                {/* <PhoneInput
+                                style={{width:"508px"}}
+                                international
+                                defaultCountry="RU"
+                                value={mobile}
+                                onChange={(e) => {
+                                    setMobile(e.target.value);
+                                }}
+                                /> */}
                             </div>  
+                            <div style={{color: "red"}}>{mobileError}</div>
 
                             <div>
                             <Typography sx={{ fontSize: 14, marginBottom: 2, marginTop: 7, textAlign: 'left'}} color="text.secondary">
@@ -326,6 +401,8 @@ const StudentRegistration = () => {
                                 required
                             />
                             </div>  
+                            <div style={{color: "red"}}>{homePhoneError}</div>
+
                             
                             <div>
                             <Typography sx={{ fontSize: 14, marginBottom: 2, marginTop: 7, textAlign: 'left'}} color="text.secondary">
@@ -356,6 +433,7 @@ const StudentRegistration = () => {
                                 />
                                 </Stack>
                             </LocalizationProvider>
+                            <div style={{color: "red"}}>{internshipStartDateError}</div>
 
                             <div>
                             <Typography sx={{ fontSize: 14, marginBottom: 2, marginTop: 7, textAlign: 'left'}} color="text.secondary">
@@ -376,18 +454,28 @@ const StudentRegistration = () => {
                                 disabled={currentYear === "Year 1" ||  currentYear === "Year 2"}
                             />
                             </div>
+                            <div style={{color: "red"}}>{supervisorEmailError}</div>
                         </div>
                     </CardContent>
                     <CardActions>
+                            {currentYear === "Year 1" ||  currentYear === "Year 2" ? <Button 
+                                variant="contained" 
+                                onClick={registerStudent}
+                                //fullWidth
+                                sx= {{backgroundColor: "#293B5F", fontFamily: '"Helvetica Neue"', width: 300, marginTop: 10 }}
+                                //disabled={!usertype || !email || !password }
+                            >
+                                Save
+                            </Button> : 
                             <Button 
                                 variant="contained" 
                                 onClick={registerStudent}
                                 //fullWidth
-                                sx= {{backgroundColor: "#293B5F", fontFamily: '"Helvetica Neue"', width: 300 }}
+                                sx= {{backgroundColor: "#293B5F", fontFamily: '"Helvetica Neue"', width: 300, marginTop: 10 }}
                                 //disabled={!usertype || !email || !password }
                             >
-                                Register
-                            </Button>
+                            Register
+                        </Button>}
                     </CardActions>
                 </Card>
             </Box>

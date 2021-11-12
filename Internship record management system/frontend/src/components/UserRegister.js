@@ -24,10 +24,12 @@ import validator from 'validator'
 const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPassword}) => {
 
     const [showPassword, setShowPassword] = React.useState(false);
+    const [confirmPass, setConfirmPass] = React.useState('');
 
     const [emailError, setEmailError] = React.useState('');
     const [passwordError, setPasswordError] = React.useState('');
     const [usertypeError, setUsertypeError] = React.useState('');
+    const [confirmPassError, setConfirmPassError] = React.useState('');
 
     const history = useHistory();
 
@@ -39,6 +41,10 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
     const handlePasswordChange = (event) => {
         validatePassword(event.target.value);
         setPassword(event.target.value);
+    };
+
+    const handleConfirmPasswordChange = (event) => {
+        setConfirmPass(event.target.value);
     };
     
     const handleClickShowPassword = () => {
@@ -55,7 +61,9 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
         let emailError = "";
         let passwordError = "";
         let usertypeError = "";
-        let emailRegex = /^[it|bm]+[0-9]+@[a-z]+\.[a-z]+\.[a-z]+/;
+        let emailRegex = /^[it|bm|IT|BM]+[0-9]+@[a-z]+\.[a-z]+\.[a-z]+/;
+        let confirmPassError = "";
+        let supervisorEmailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
         if(usertype === "student"){
             if(!emailRegex.test(email)){
@@ -71,9 +79,15 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
         //         emailError = "Invalid Email";
         //     }
         // }
-        if(!emailRegex.test(email)){
-            emailError = "Invalid Email";
-        };
+        if(usertype === "supervisor"){
+            if(!supervisorEmailRegex.test(email)){
+                emailError = "Invalid Email";
+            };
+        }
+        
+        if(password !== confirmPass){
+            confirmPassError = "Passwords must match"
+        }
 
         if(!password){
             passwordError = "Please enter a password";
@@ -84,11 +98,15 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
         if(!usertype){
             usertypeError = "Please select a user type";
         }
+        if(!confirmPass){
+            confirmPassError = "Please re-enter the password";
+        }
         
-        if(emailError || passwordError || usertypeError){
+        if(emailError || passwordError || usertypeError || confirmPassError){
             setEmailError(emailError);
             setPasswordError(passwordError)
             setUsertypeError(usertypeError)
+            setConfirmPassError(confirmPassError)
             return false;
         }
 
@@ -132,6 +150,7 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                     setUsertype('')
                     setPassword('')
                     setEmail('')
+                    setConfirmPass('')
                 }
             })
         }    
@@ -155,7 +174,7 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                     '& > :not(style)': {
                     m: 1,
                     width: 450,
-                    height: 550,
+                    height: 569,
                     // marginTop: 10
                     marginTop: 2
                     },
@@ -187,7 +206,7 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                             
                             <div style={{ marginTop: 15 }}>
                             {usertype === "student" && <Typography sx={{ fontSize: 14, marginBottom: 1 }} color="text.secondary">
-                                Students are strongly recommended use SLIIT e-mail address e.g it17051456@my.sliit.lk and it will be the primary e-mail address SLIIT industry placement unit will correspond with the student
+                                e.g it17051456@my.sliit.lk 
                             </Typography>}
                             <TextField id="email" type="email" label="Email" variant="outlined" fullWidth 
                                 // sx={{ marginTop: 2 }}
@@ -226,6 +245,31 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                             </FormControl>
                             <div style={{color: "red"}}>{passwordError}</div>
                             {/* <div style={{color: "red"}}>{passwordErrorEmpty}</div> */}
+
+                            <FormControl sx={{ marginTop: 2 }} variant="outlined" fullWidth>
+                                <InputLabel htmlFor="outlined-adornment-password">Re-enter Password</InputLabel>
+                                <OutlinedInput
+                                    id="outlined-adornment-re-password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={confirmPass}
+                                    onChange={handleConfirmPasswordChange}
+                                    endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                    }
+                                    label="Re-enter Password"
+                                    required
+                                />
+                            </FormControl>
+                            <div style={{color: "red"}}>{confirmPassError}</div>
                     </CardContent>
                     <CardActions>
                             <Button 

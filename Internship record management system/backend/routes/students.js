@@ -1,5 +1,7 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
+const nodemailer = require("nodemailer");
+const dotenv = require('dotenv').config();
 
 // @route   POST api/students/registerStudent
 // @desc    POST register new student
@@ -28,7 +30,65 @@ router.post('/registerStudent', (req, res) => {
                 res.send(result);
             });  
         } 
-    });   
+    });  
+    
+    if(supervisorEmail){
+        async function main() {
+          
+            // create reusable transporter object using the default SMTP transport
+            let transporter = nodemailer.createTransport({
+              host: "smtp.sendgrid.net",
+              port: 587,
+              secure: false, // true for 465, false for other ports
+              auth: {
+                user: 'apikey', // generated ethereal user
+                pass: process.env.EMAILNODE_PASSWORD, // generated ethereal password
+              },
+              tls: {
+                  rejectUnauthorized: false
+              }
+            });
+
+            db.query(`SELECT id FROM users WHERE email = '${supervisorEmail}' AND usertype = "supervisor"`, async (err, result) => {
+              if(err) throw err;
+              if (result.length>0){
+                 // send mail with defined transport object
+                let info = await transporter.sendMail({
+                  from: '"SLIIT Internships" <it18184686@my.sliit.lk>',
+                  to: supervisorEmail, // list of receivers
+                  subject: `Supervisor Login, Student - ${name}`, // Subject line
+                  text: "Hello world?", // plain text body
+                  html: "<b>Please fill the forms related to the student's internship</b> <br/> <a href='http://localhost:3000/login'>Supervisor Login</a>", // html body
+                });
+                
+                console.log("Message sent: %s", info.messageId);
+                // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+              
+                // Preview only available when sending through an Ethereal account
+                console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+                // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+              } else {
+                // send mail with defined transport object
+                let info = await transporter.sendMail({
+                  from: '"SLIIT Internships" <it18184686@my.sliit.lk>',
+                  to: supervisorEmail, // list of receivers
+                  subject: `Supervisor Registration, Student - ${name}`, // Subject line
+                  text: "Hello world?", // plain text body
+                  html: "<b>Please fill the forms and register as a supervisor</b> <br/> <a href='http://localhost:3000/'>Supervisor Registration</a>", // html body
+                });
+
+                console.log("Message sent: %s", info.messageId);
+                // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+              
+                // Preview only available when sending through an Ethereal account
+                console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+                // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+              }
+            });  
+          }
+          
+          main().catch(console.error);
+    }
 })
 
 module.exports = router
