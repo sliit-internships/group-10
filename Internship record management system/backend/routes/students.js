@@ -23,7 +23,7 @@ router.post('/registerStudent', (req, res) => {
         if(err) throw err;
         if (result.length>0){
             let student = [result[0].id, studentIdNumber, currentYear, Year2CompletionYear, Year2CompletionPeriod, sepcialization, name, mobile, homePhone, internshipStartDate, supervisorEmail];
-            let sql = 'INSERT INTO students (sid, studentIdNumber, currentYear, 2ndYearCompletionYear, 2ndYearCompletionPeriod, sepcialization, name, mobile, homePhone, internshipStartDate, supervisorEmail ) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
+            let sql = 'INSERT INTO students (sid, studentIdNumber, currentYear, Year2CompletionYear, Year2CompletionPeriod, sepcialization, name, mobile, homePhone, internshipStartDate, supervisorEmail ) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
             db.query(sql, student, (err, result) => {
                 if(err) throw err;
                 console.log(result);
@@ -41,7 +41,7 @@ router.post('/registerStudent', (req, res) => {
               port: 587,
               secure: false, // true for 465, false for other ports
               auth: {
-                user: 'apikey', // generated ethereal user
+                user: process.env.EMAILNODE_USER, // generated ethereal user
                 pass: process.env.EMAILNODE_PASSWORD, // generated ethereal password
               },
               tls: {
@@ -89,6 +89,21 @@ router.post('/registerStudent', (req, res) => {
           
           main().catch(console.error);
     }
+})
+
+// @route   GET api/students/getStudent/:email
+// @desc    Get student by email
+// @access  Private
+router.get('/getStudent/:email', (req, res) => {
+  let fetchId = `SELECT id FROM users WHERE email = '${req.params.email}'`;
+  db.query(fetchId, (err, result) => {
+    if(err) throw err;
+    let sql = `SELECT * FROM students WHERE sid = '${result[0].id}'`;
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        res.send(result);
+    });  
+  });  
 })
 
 module.exports = router

@@ -90,7 +90,7 @@ router.put('/forgot-password', (req, res) => {
                   port: 587,
                   secure: false, // true for 465, false for other ports
                   auth: {
-                    user: 'apikey', // generated ethereal user
+                    user: process.env.EMAILNODE_USER, // generated ethereal user
                     pass: process.env.EMAILNODE_PASSWORD, // generated ethereal password
                   },
                   tls: {
@@ -104,8 +104,9 @@ router.put('/forgot-password', (req, res) => {
                       to: email, // list of receivers
                       subject: "Reset password", // Subject line
                       text: "Hello world?", // plain text body
-                      html: "<b>Click the link to reset the password</b> <br/>", // html body
+                      html: '<b>Click the link to reset the password</b> <br/> <a href="http://localhost:3000/reset-password?email=' + email + '">Reset Password</a>', // html body
                     });
+                    //href="http://localhost:4000/reset-password?token=' + token + '">
                     
                     console.log("Message sent: %s", info.messageId);
                     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
@@ -125,29 +126,34 @@ router.put('/forgot-password', (req, res) => {
 // @route   PUT api/users/reset-password
 // @desc    PUT reset-password
 // @access  Private
-// router.put('/reset-password', (req, res) => {
-//     const email = req.body.email;
-//     const password = req.body.password;
+router.put('/reset-password', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
 
-//     let sql = 'SELECT * FROM users WHERE email = ?';
-//     db.query(sql, email, (err, result) => {
-//         if(err){
-//             res.send({err: err});
-//         }
-//         if(result.length > 0){
-//             bcrypt.compare(password, result[0].password, (error, response) => {
-//                 if(response){
-//                     //req.session.user = result;
-//                     //console.log(req.session.user);
-//                     res.send(result);
-//                 }else{
-//                     res.send({message: 'Wrong email or password!'});
-//                 }
-//             })
-//         }else{
-//             res.send({message: "User doesn't exsit"});
-//         }
-//     });  
-// })
+    let sql = 'SELECT * FROM users WHERE email = ?';
+    db.query(sql, email, (err, result) => {
+        if(err){
+            res.send({err: err});
+        }
+        if(result.length > 0){
+            bcrypt.hash(password, saltRounds, (err, hash) => {
+
+                if(err){
+                    console.log(err);
+                    res.send({ message: err.message });
+                }
+                let user = [hash];
+                let sql = `UPDATE users SET password = ? WHERE email = '${result[0].email}'`;
+                db.query(sql, user, (err, result) => {
+                    if(err) throw err;
+                    console.log(result);
+                    res.send({message: "Password Updated"});
+                });  
+            })
+        }else{
+            res.send({message: "User doesn't exsit"});
+        }
+    });  
+})
 
 module.exports = router

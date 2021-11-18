@@ -21,8 +21,8 @@ import Stack from '@mui/material/Stack';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
-import PhoneInput from 'react-phone-number-input'
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import '../App.css'; 
 import { blue } from '@mui/material/colors';
@@ -172,7 +172,9 @@ const StudentRegistration = () => {
             }).then((res) => {
 
                 let path = `/studentdetails`; 
-                history.push(path);
+                history.push(path, {email});
+
+                toast.success('Successsfully registered');
 
                 console.log(res);
                 setStudentIdNumber('');
@@ -333,11 +335,11 @@ const StudentRegistration = () => {
                                     <MenuItem value="SE">SE</MenuItem>
                                     <MenuItem value="IT">IT</MenuItem>
                                     <MenuItem value="CS">CS</MenuItem>
-                                    <MenuItem value="SE">DS</MenuItem>
-                                    <MenuItem value="IT">IM</MenuItem>
-                                    <MenuItem value="CS">CSNE</MenuItem>
-                                    <MenuItem value="IT">ISE</MenuItem>
-                                    <MenuItem value="CS">Not Yet Finalized (2nd Year Student)</MenuItem>
+                                    <MenuItem value="DS">DS</MenuItem>
+                                    <MenuItem value="IM">IM</MenuItem>
+                                    <MenuItem value="CSNE">CSNE</MenuItem>
+                                    <MenuItem value="ISE">ISE</MenuItem>
+                                    <MenuItem value="Not Yet Finalized (2nd Year Student)">Not Yet Finalized (2nd Year Student)</MenuItem>
                                 </Select>
                             </FormControl> 
                             <div style={{color: "red"}}>{sepcializationError}</div>
