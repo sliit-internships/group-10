@@ -52,7 +52,7 @@ app.get('/createuserstable', (req, res) => {
 
 //create student table
 app.get('/createstudentstable', (req, res) => {
-    let sql = 'CREATE TABLE students(sid int(255), studentIdNumber VARCHAR(25), currentYear VARCHAR(25), 2ndYearCompletionYear VARCHAR(10), 2ndYearCompletionPeriod VARCHAR(10), sepcialization VARCHAR(55), name VARCHAR(100), mobile VARCHAR(25), homePhone VARCHAR(25), internshipStartDate DATE, supervisorEmail VARCHAR(100), PRIMARY KEY(sid))';
+    let sql = 'CREATE TABLE students(sid int(255), studentIdNumber VARCHAR(25), currentYear VARCHAR(25), Year2CompletionYear VARCHAR(10), Year2CompletionPeriod VARCHAR(10), sepcialization VARCHAR(55), name VARCHAR(100), mobile VARCHAR(25), homePhone VARCHAR(25), internshipStartDate DATE, supervisorEmail VARCHAR(100), PRIMARY KEY(sid))';
     db.query(sql, (err, result) => {
         if(err) throw err;
         console.log(result);

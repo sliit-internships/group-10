@@ -74,10 +74,10 @@ const UserLogin = () => {
                 if(res.data.message){
                     setError(res.data.message);
                 }else{
-                    console.log(res)
+                    //console.log(res)
                     if(res.data[0].usertype === "student"){
                         let path = `/studentdetails`; 
-                        history.push(path);
+                        history.push(path, {email});
                     } 
                     // else if(res.data[0].usertype === "supervisor"){
                     //     let path = `/supervisorregistration`; 
@@ -120,27 +120,7 @@ const UserLogin = () => {
                         <Typography variant="h4" component="div" sx= {{marginBottom: 5, color: "#FFA400", fontFamily: '"Helvetica Neue"'}}>
                             User Login
                         </Typography>
-                            {/* <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">User Type</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={usertype}
-                                    label="User Type"
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <MenuItem value="student">Student</MenuItem>
-                                    <MenuItem value="supervisor">Supervisor</MenuItem>
-                                    <MenuItem value="intern manager">Intern Manager</MenuItem>
-                                </Select>
-                            </FormControl>   
-                            <div style={{color: "red"}}>{usertypeError}</div> */}
-                            
                             <div style={{ marginTop: 15 }}>
-                            {/* {usertype === "student" && <Typography sx={{ fontSize: 14, marginBottom: 1 }} color="text.secondary">
-                                Students are strongly recommended use SLIIT e-mail address e.g it17051456@my.sliit.lk and it will be the primary e-mail address SLIIT industry placement unit will correspond with the student
-                            </Typography>} */}
                             <TextField id="email" type="email" label="Email" variant="outlined" fullWidth 
                                 sx={{ marginTop: 2 }}
                                 value={email}
@@ -178,6 +158,11 @@ const UserLogin = () => {
                             </FormControl>
                             {!password ?<div style={{color: "red"}}>{passwordError}</div>:
                             <div style={{color: "red"}}>{error}</div>}
+                            <Link to= '/forgot-password'>
+                                <Typography  sx={{ marginTop: 1 }} variant="body2">
+                                        Forgot your password?
+                                </Typography>
+                            </Link>
                     </CardContent>
                     <CardActions>
                             <Button 
