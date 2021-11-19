@@ -54,7 +54,7 @@ router.post('/registerStudent', (req, res) => {
               if (result.length>0){
                  // send mail with defined transport object
                 let info = await transporter.sendMail({
-                  from: '"SLIIT Internships" <it18184686@my.sliit.lk>',
+                  from: '"SLIIT Internships" <it18195262@my.sliit.lk>',
                   to: supervisorEmail, // list of receivers
                   subject: `Supervisor Login, Student - ${name}`, // Subject line
                   text: "Hello world?", // plain text body
@@ -70,7 +70,7 @@ router.post('/registerStudent', (req, res) => {
               } else {
                 // send mail with defined transport object
                 let info = await transporter.sendMail({
-                  from: '"SLIIT Internships" <it18184686@my.sliit.lk>',
+                  from: '"SLIIT Internships" <it18195262@my.sliit.lk>',
                   to: supervisorEmail, // list of receivers
                   subject: `Supervisor Registration, Student - ${name}`, // Subject line
                   text: "Hello world?", // plain text body
