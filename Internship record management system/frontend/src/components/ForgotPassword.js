@@ -6,11 +6,56 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Axios from 'axios';
+import { toast } from 'react-toastify';
 
 const ForgotPassword = () => {
 
     const [email, setEmail] = React.useState('');
-    // const [emailError, setEmailError] = React.useState('');
+    const [emailError, setEmailError] = React.useState('');
+
+    const validate = () => {
+        let emailError = "";
+        let emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+
+        if(!emailRegex.test(email)){
+            emailError = "Invalid Email";
+        } 
+
+        if(!email){
+            emailError = "Please enter the email";
+        }
+
+        if(emailError){
+            setEmailError(emailError);
+            return false;
+        }
+        return true;
+    }
+
+    const submit = () => {
+        const isValid = validate();
+        if(isValid){
+            Axios.put("http://localhost:5000/api/users/forgot-password", {
+            email: email
+            }).then((res) => {
+                if(res.data.err){
+                    console.log(res.data.err)
+                }else{
+                    console.log(res)
+                    if(res.data.message === 'email sent'){
+                        toast.success('Password Reset Link has been sent to the associated email');
+                        setEmail('');
+                        setEmailError('');
+                    } else{
+                        toast.error(res.data.message);
+                        setEmailError(res.data.message);
+                    }
+                    
+                }
+            })
+        }
+    }
 
     return (
         <div style={{
@@ -49,29 +94,22 @@ const ForgotPassword = () => {
                                     value={email}
                                     onChange={(e) => {
                                         setEmail(e.target.value);
-                                        // setEmailError('');
                                     }}
                                     required
                                 />
                             </div>
-                            {/* <div style={{color: "red"}}>{emailError}</div> */}
+                            <div style={{color: "red"}}>{emailError}</div>
                     </CardContent>
                     <CardActions>
                             <Button 
                                 variant="contained" 
-                                // onClick={login}
+                                onClick={submit}
                                 fullWidth
                                 sx= {{backgroundColor: "#FFA400", fontFamily: '"Helvetica Neue"'}}
-                                //disabled={!usertype || !email || !password }
                             >
                                 Submit
                             </Button>
                     </CardActions>
-                    {/* <Link to= '/'>
-                        <Typography variant="body2">
-                                New to SLIIT Internships? Regsiter
-                        </Typography>
-                    </Link> */}
                 </Card>
             </Box>
         </div>
