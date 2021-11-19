@@ -19,11 +19,13 @@ import IconButton from '@mui/material/IconButton';
 import validator from 'validator';
 import Axios from 'axios';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
 const ResetPassword = () => {
     const { search } = useLocation();
     console.log(search);
     const { email } = queryString.parse(search);
+    const history = useHistory();
 
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -106,6 +108,8 @@ const ResetPassword = () => {
                         setConfirmPass('');
                         setPasswordError('');
                         setConfirmPassError('');
+                        let path = `/login`; 
+                        history.push(path);
                     } else{
                         toast.error(res.data.message);
                         setPasswordError(res.data.message);
