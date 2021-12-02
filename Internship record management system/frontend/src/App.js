@@ -12,6 +12,7 @@ import ResetPassword from './components/ResetPassword';
 import ForgotPassword from './components/ForgotPassword';
 import DashBoard from './components/intern-manager/DashBoard';
 import SupervisorRegistration from './components/supervisor/SupervisorRegistration';
+import CompanyList from './components/intern-manager/CompanyList';
 
 function App() {
 
@@ -63,6 +64,11 @@ function App() {
         <Route path= '/supervisorRegistration' render= {(props) => (
           <>
             <SupervisorRegistration/>
+          </>
+        )}/>
+        <Route path= '/companyList' render= {(props) => (
+          <>
+            <CompanyList/>
           </>
         )}/>
       </Router>
