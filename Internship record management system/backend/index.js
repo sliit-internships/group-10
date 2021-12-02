@@ -4,10 +4,13 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const port = 5000 || process.env.PORT;
 
+global.__basedir = __dirname;
+
 //routes
 const users = require('./routes/users');
 const students = require('./routes/students');
 const internManager = require('./routes/internManager')
+const companies = require('./routes/companies');
 
 //create db connection
 db = mysql.createConnection({
@@ -61,10 +64,21 @@ app.get('/createstudentstable', (req, res) => {
     });
 })
 
+//create company table
+app.get('/createcompanytable', (req, res) => {
+    let sql = 'CREATE TABLE companies(id int(20), name VARCHAR(255), address VARCHAR(255), size VARCHAR(300), registeredYear VARCHAR(100), registeredCounty VARCHAR(100), PRIMARY KEY(id))';
+    db.query(sql, (err, result) => {
+        if(err) throw err;
+        console.log(result);
+        res.send('Companies table created');
+    });
+})
+
 //routes
 app.use('/api/users', users);
 app.use('/api/students', students);
 app.use('/api/intern-manager', internManager);
+app.use('/api/companies', companies)
 
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
