@@ -74,7 +74,7 @@ router.post('/registerStudent', (req, res) => {
                   to: supervisorEmail, // list of receivers
                   subject: `Supervisor Registration, Student - ${name}`, // Subject line
                   text: "Hello world?", // plain text body
-                  html: "<b>Please fill the forms and register as a supervisor</b> <br/> <a href='http://localhost:3000/'>Supervisor Registration</a>", // html body
+                  html: '<b>Please fill the forms and register as a supervisor</b> <br/> <a href="http://localhost:3000/?supervisorEmail=' + supervisorEmail + '">Supervisor Registration</a>', // html body
                 });
 
                 console.log("Message sent: %s", info.messageId);

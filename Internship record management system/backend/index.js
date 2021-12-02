@@ -7,6 +7,7 @@ const port = 5000 || process.env.PORT;
 //routes
 const users = require('./routes/users');
 const students = require('./routes/students');
+const internManager = require('./routes/internManager')
 
 //create db connection
 db = mysql.createConnection({
@@ -63,6 +64,7 @@ app.get('/createstudentstable', (req, res) => {
 //routes
 app.use('/api/users', users);
 app.use('/api/students', students);
+app.use('/api/intern-manager', internManager);
 
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);

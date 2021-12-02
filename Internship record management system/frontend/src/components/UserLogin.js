@@ -79,10 +79,14 @@ const UserLogin = () => {
                         let path = `/studentdetails`; 
                         history.push(path, {email});
                     } 
-                    // else if(res.data[0].usertype === "supervisor"){
-                    //     let path = `/supervisorregistration`; 
-                    //     history.push(path);
-                    // }
+                    else if(res.data[0].usertype === "intern manager"){
+                        let path = `/internManager-dashboard`; 
+                        history.push(path);
+                    }
+                    else if(res.data[0].usertype === "supervisor"){
+                        let path = `/supervisorRegistration`; 
+                        history.push(path);
+                    }
                     setPassword('')
                     setEmail('')
                 }
