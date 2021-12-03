@@ -27,3 +27,24 @@ Student Registration
 2.Click the register button.
 3.All the fields are validated.
 4.Supervisor will recieve an email to register or login to the system.
+
+User Registration as a supervisor
+
+1.Click the link on the recieved email and enter the password.
+2.Click the register button.
+
+User Login as a supervisor
+
+1.Click the link on the recieved email and enter the credentials.
+2.Click the login button.
+
+Intern manager login
+
+1.Enter the credentials and login.
+2.navigated to the intern manager dashboard.
+
+Comapny excel file upload by intern manager
+
+1.Click the company card on the dashboard.
+2.Select the excel file.
+3.Click the upload button.
