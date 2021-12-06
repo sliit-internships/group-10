@@ -46,3 +46,23 @@
 .line{
   margin-top: 60;
 }
+
+.btn-choose{
+  position: absolute;
+  left: 345px;
+}
+
+/* .btn-choose:hover {
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+} */
+
+#btn-upload{
+  position: absolute;
+  left: 700px;
+  top: 220px  
+}
+
+.upload{
+  left: 728px;
+}

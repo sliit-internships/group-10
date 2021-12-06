@@ -10,12 +10,17 @@ import UserLogin from './components/UserLogin';
 import StudentDetails from './components/StudentDetails';
 import ResetPassword from './components/ResetPassword';
 import ForgotPassword from './components/ForgotPassword';
+import DashBoard from './components/intern-manager/DashBoard';
+import SupervisorRegistration from './components/supervisor/SupervisorRegistration';
+import CompanyList from './components/intern-manager/CompanyList';
 
 function App() {
 
-  const [usertype, setUsertype] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  // const [usertype, setUsertype] = React.useState('');
+  // const [email, setEmail] = React.useState('');
+  // const [password, setPassword] = React.useState('');
+  // usertype={usertype} setUsertype={setUsertype} email={email} setEmail={setEmail} 
+  //             password={password} setPassword={setPassword}
 
   return (
     <div className="App">
@@ -23,9 +28,7 @@ function App() {
       <Router>
         <Route path= '/' exact render= {(props) => (
           <>
-            <UserRegister usertype={usertype} setUsertype={setUsertype} email={email} setEmail={setEmail} 
-              password={password} setPassword={setPassword}
-            />
+            <UserRegister />
           </>
         )}/>
         <Route path= '/login' render= {(props) => (
@@ -51,6 +54,21 @@ function App() {
         <Route path= '/forgot-password' render= {(props) => (
           <>
             <ForgotPassword/>
+          </>
+        )}/>
+        <Route path= '/internManager-dashboard' render= {(props) => (
+          <>
+            <DashBoard/>
+          </>
+        )}/>
+        <Route path= '/supervisorRegistration' render= {(props) => (
+          <>
+            <SupervisorRegistration/>
+          </>
+        )}/>
+        <Route path= '/companyList' render= {(props) => (
+          <>
+            <CompanyList/>
           </>
         )}/>
       </Router>

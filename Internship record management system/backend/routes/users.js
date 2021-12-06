@@ -100,7 +100,7 @@ router.put('/forgot-password', (req, res) => {
     
                      // send mail with defined transport object
                     let info = await transporter.sendMail({
-                      from: '"SLIIT Internships" <it18184686@my.sliit.lk>',
+                      from: '"SLIIT Internships" <it18195262@my.sliit.lk>',
                       to: email, // list of receivers
                       subject: "Reset password", // Subject line
                       text: "Hello world?", // plain text body
@@ -118,7 +118,7 @@ router.put('/forgot-password', (req, res) => {
               
               main().catch(console.error);
         }else{
-            res.send({message: "User doesn't exsit"});
+            res.send({message: "The email enterd is not associated with your SLIIT Internships account"});
         }
     });  
 })

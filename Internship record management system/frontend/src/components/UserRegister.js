@@ -17,11 +17,24 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 
-import {Link, useHistory } from 'react-router-dom'
+import {Link, useHistory, useLocation } from 'react-router-dom'
 import Axios from 'axios';
-import validator from 'validator'
+import validator from 'validator';
+import queryString from 'query-string';
 
-const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPassword}) => {
+const UserRegister = () => {
+
+    const { search } = useLocation();
+    const { supervisorEmail } = queryString.parse(search);
+    
+    // const [hasInternManager, setHasInternManager] = React.useState('');
+    // if(hasInternManager){
+    //     console.log(hasInternManager);
+    // }
+
+    const [usertype, setUsertype] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
 
     const [showPassword, setShowPassword] = React.useState(false);
     const [confirmPass, setConfirmPass] = React.useState('');
@@ -32,6 +45,31 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
     const [confirmPassError, setConfirmPassError] = React.useState('');
 
     const history = useHistory();
+
+    // React.useEffect(() => {
+    //     const fetchInternManager = () => {
+    //         Axios.get('http://localhost:5000/api/intern-manager/getInternManager')
+    //             .then((res) => {
+    //                 setHasInternManager(res.data[0]);
+    //             })
+    //     }
+    //     fetchInternManager();
+    // }, []);
+
+    React.useEffect(() => {
+        const fetchSupervisorDetails = () => {
+            if(supervisorEmail){
+                setEmail(supervisorEmail);
+                setUsertype("supervisor");
+            }
+        }
+        fetchSupervisorDetails();
+    }, [supervisorEmail]);
+
+    if(supervisorEmail){
+        console.log(email);
+        console.log(usertype);
+    }
 
     const handleChange = (event) => {
         setUsertype(event.target.value);
@@ -147,6 +185,10 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                         let path = `/studentregistration`; 
                         history.push(path, {email});
                     }
+                    else if(usertype === "supervisor"){
+                        let path = `/supervisorRegistration`; 
+                        history.push(path);
+                    }
                     setUsertype('')
                     setPassword('')
                     setEmail('')
@@ -189,18 +231,18 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                         </Typography>
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">User Type</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={usertype}
-                                    label="User Type"
-                                    onChange={handleChange}
-                                    required
-                                >
-                                    <MenuItem value="student">Student</MenuItem>
-                                    <MenuItem value="supervisor">Supervisor</MenuItem>
-                                    <MenuItem value="intern manager">Intern Manager</MenuItem>
-                                </Select>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={usertype}
+                                        label="User Type"
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <MenuItem value="student">Student</MenuItem> 
+                                        <MenuItem value="supervisor">Supervisor</MenuItem>               
+                                        {/* {hasInternManager ? <div></div> :<MenuItem value="intern manager">Intern Manager</MenuItem>} */}
+                                    </Select>
                             </FormControl>   
                             <div style={{color: "red"}}>{usertypeError}</div>
                             
@@ -209,13 +251,13 @@ const UserRegister = ({usertype, setUsertype, email, setEmail, password, setPass
                                 e.g it17051456@my.sliit.lk 
                             </Typography>}
                             <TextField id="email" type="email" label="Email" variant="outlined" fullWidth 
-                                // sx={{ marginTop: 2 }}
-                                value={email}
-                                onChange={(e) => {
-                                    setEmail(e.target.value);
-                                    setEmailError('');
-                                }}
-                                required
+                                    // sx={{ marginTop: 2 }}
+                                    value={email}
+                                    onChange={(e) => {
+                                        setEmail(e.target.value);                                    
+                                        setEmailError('');
+                                    }}
+                                    required
                             />
                             </div>
                             <div style={{color: "red"}}>{emailError}</div>
