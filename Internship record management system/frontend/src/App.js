@@ -13,6 +13,7 @@ import ForgotPassword from './components/ForgotPassword';
 import DashBoard from './components/intern-manager/DashBoard';
 import SupervisorRegistration from './components/supervisor/SupervisorRegistration';
 import CompanyList from './components/intern-manager/CompanyList';
+import StudentList from './components/intern-manager/StudentList';
 
 function App() {
 
@@ -69,6 +70,11 @@ function App() {
         <Route path= '/companyList' render= {(props) => (
           <>
             <CompanyList/>
+          </>
+        )}/>
+        <Route path= '/studentList' render= {(props) => (
+          <>
+            <StudentList/>
           </>
         )}/>
       </Router>

@@ -25,6 +25,11 @@ const DashBoard = () => {
         let path = `/companyList`; 
         history.push(path);
     }
+
+    const students = () => {
+        let path = `/studentList`; 
+        history.push(path);
+    }
    
     return (
         <div>
@@ -67,7 +72,7 @@ const DashBoard = () => {
                                     <Grid container justifyContent="center" spacing={5}>
                                         <Grid item>
                                             <Button>
-                                                <Paper sx={{ height: 345, width: 280 }}>
+                                                <Paper onClick={students} sx={{ height: 345, width: 280 }}>
                                                     <PersonIcon sx={{ height: 250, width: 200, marginTop: 3 }}/>
                                                     <Typography >
                                                         Student
