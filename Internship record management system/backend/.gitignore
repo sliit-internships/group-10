@@ -6,6 +6,6 @@
 # misc
 .env
 /.env
-# /uploads
+/uploads
 
 
