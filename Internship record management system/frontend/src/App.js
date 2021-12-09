@@ -13,6 +13,7 @@ import ForgotPassword from './components/ForgotPassword';
 import DashBoard from './components/intern-manager/DashBoard';
 import SupervisorRegistration from './components/supervisor/SupervisorRegistration';
 import CompanyList from './components/intern-manager/CompanyList';
+//import ChangeSupervisor from './components/ChangeSupervisor';
 
 function App() {
 
@@ -71,6 +72,11 @@ function App() {
             <CompanyList/>
           </>
         )}/>
+        {/* <Route path= '/change-supervisor' render= {(props) => (
+          <>
+            <ChangeSupervisor/>
+          </>
+        )}/> */}
       </Router>
     </div>
   );

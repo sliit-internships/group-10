@@ -5,8 +5,17 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+//import { useHistory } from 'react-router-dom';
 
 const Header = () => {
+
+    // //const history = useHistory();
+
+    // const changeSupervisor = () => {
+    //     let path = `/change-supervisor`; 
+    //     history.push(path);
+    // }
+
     return (
         <div>
             <img src="https://courseweb.sliit.lk/pluginfile.php/1/theme_lambda/logo/1629135847/sliit_logo.jpg" alt="Sliit"/>
@@ -24,6 +33,12 @@ const Header = () => {
                         </IconButton>
                         <Button color="inherit">Form I-3A</Button>
                         <Button color="inherit">Form I-6</Button>
+                        {/* <Button 
+                            color="inherit"
+                            onClick={changeSupervisor}
+                        >
+                            Form I-1C
+                        </Button> */}
                     </Toolbar>
                 </AppBar>
             </Box>
