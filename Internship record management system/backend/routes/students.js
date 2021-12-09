@@ -106,4 +106,15 @@ router.get('/getStudent/:email', (req, res) => {
   });  
 })
 
+// @route   GET api/students/getAllStudents
+// @desc    Get all students
+// @access  Private
+router.get('/getAllStudents', (req, res) => {
+  let sql = 'SELECT * FROM students';
+  db.query(sql, (err, result) => {
+    if(err) throw err;
+    res.send(result);
+  });  
+})
+
 module.exports = router
